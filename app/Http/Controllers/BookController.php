@@ -15,6 +15,15 @@ class BookController extends Controller
         $this->bookRepository = $bookRepository;
     }
 
+
+    public function search(Request $request)
+    {
+        $query = $request->input('q');
+        $books = $this->bookRepository->search($query);
+
+        return response()->json($books);
+    }
+    
     /**
      * Display a listing of the books.
      *

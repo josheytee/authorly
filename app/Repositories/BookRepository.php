@@ -14,6 +14,23 @@ class BookRepository
         $this->model = $book;
     }
 
+    public function search($query)
+    {
+        $searchMethod = config('search.method');
+
+        if ($searchMethod === 'scout') {
+            // Use Laravel Scout for search
+            return $this->model->search($query)->get();
+        } else {
+            // Use query-based search
+            return $this->model->where('title', 'LIKE', "%{$query}%")
+                ->orWhereHas('author', function ($q) use ($query) {
+                    $q->where('name', 'LIKE', "%{$query}%");
+                })
+                ->get();
+        }
+    }
+
     /**
      * Get all books
      *
