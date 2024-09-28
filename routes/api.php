@@ -1,12 +1,15 @@
 <?php
 
-use App\Http\Controllers\AuthorController;
-use App\Http\Controllers\BookController;
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\API\AuthorController;
+use App\Http\Controllers\API\BookController;
+use App\Http\Controllers\API\AuthController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
+use App\Http\Controllers\API\UserController;
+use Illuminate\Http\Request;
 
 Route::middleware('guest')->post('/login', [AuthController::class, 'login'])->name('api.login');
+Route::middleware('guest')->post('/register', [AuthController::class, 'register']);
 
 
 // Route::middleware('auth:sanctum')->group(function () {
@@ -16,8 +19,10 @@ Route::middleware('guest')->post('/login', [AuthController::class, 'login'])->na
 // });
 
 
-Route::middleware(['auth:sanctum', EnsureFrontendRequestsAreStateful::class])->group(function () {
+Route::get('/user', [UserController::class, 'index']);
+Route::middleware('auth:sanctum')->group(function () {
     // Route::prefix('v1')->group(function () {
+
     Route::get('/books/search', [BookController::class, 'search'])->name('books.search');
 
     Route::apiResource('books', BookController::class);

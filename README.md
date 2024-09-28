@@ -1,66 +1,224 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Authorly - Book and Author Management Application
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This project is a full-stack application built with **Laravel** on the backend and **React** on the frontend, with API endpoints and authentication mechanisms to manage books and authors. It supports both API-based and Inertia-based responses, allowing seamless interaction from both frontend and backend.
 
-## About Laravel
+## Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+-   **Authentication**: Implemented using HTTPOnly cookies for security with Laravel Sanctum.
+-   **API CRUD Operations**: Full API support for managing books and authors.
+-   **Frontend with React**: Built with React and React Router for frontend views and navigation.
+-   **Inertia Responses**: Supports both Inertia and API-based frontend interactions.
+-   **Authorization and Guards**: Ensures proper access control for authenticated users.
+-   **Folder Structure**: Organized to separate concerns for API and web routes/controllers.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Technologies Used
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+-   **Backend**: Laravel, Sanctum (for API token authentication), MySQL, Laravel Scout (for search).
+-   **Frontend**: React, Vite, Inertia.js, React Router.
+-   **Database**: MySQL.
 
-## Learning Laravel
+## Setup Instructions
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Prerequisites
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+-   PHP 8.1 or above
+-   Composer
+-   Node.js and npm
+-   MySQL
+-   Laravel Sanctum for API authentication
+-   Laravel Scout for search functionality
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Backend Setup
 
-## Laravel Sponsors
+1. Clone the repository and navigate to the project directory:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+    ```bash
+    git clone https://github.com/your-repo/authorly.git
+    cd authorly
+    ```
 
-### Premium Partners
+2. Install PHP dependencies using Composer:
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+    ```bash
+    composer install
+    ```
 
-## Contributing
+3. Create a `.env` file and set up your database configuration:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+    ```bash
+    cp .env.example .env
+    php artisan key:generate
+    ```
 
-## Code of Conduct
+4. Configure MySQL database settings in `.env`:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+    ```plaintext
+    DB_CONNECTION=mysql
+    DB_HOST=127.0.0.1
+    DB_PORT=3306
+    DB_DATABASE=authorly
+    DB_USERNAME=root
+    DB_PASSWORD=
+    ```
 
-## Security Vulnerabilities
+5. Run migrations to create database tables:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+    ```bash
+    php artisan migrate
+    ```
 
-## License
+6. Set up Laravel Sanctum for authentication:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+    ```bash
+    php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider"
+    php artisan migrate
+    ```
+
+7. Install Laravel Scout for search functionality:
+
+    ```bash
+    composer require algolia/scout-extended
+    ```
+
+8. Configure your Algolia credentials in `.env`:
+
+    ```plaintext
+    ALGOLIA_APP_ID=your-algolia-app-id
+    ALGOLIA_SECRET=your-algolia-api-key
+    ```
+
+9. Seed the database with initial data:
+
+    ```bash
+    php artisan db:seed
+    ```
+
+10. Serve the application:
+    ```bash
+    php artisan serve
+    ```
+
+### Frontend Setup
+
+1. Navigate to the `resources/js` directory and install JavaScript dependencies:
+
+    ```bash
+    npm install
+    ```
+
+2. Build the assets using Vite:
+
+    ```bash
+    npm run dev
+    ```
+
+3. Configure the frontend routes in `resources/js/app.jsx`:
+
+    ```javascript
+    import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+    import Home from "./Pages/Home";
+    import AuthorList from "./Pages/AuthorList";
+    // Import other components
+
+    const App = () => (
+        <Router>
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/authors" element={<AuthorList />} />
+                {/* Define other routes */}
+            </Routes>
+        </Router>
+    );
+
+    export default App;
+    ```
+
+4. Set up the catch-all route in `routes/web.php` to serve the React app:
+    ```php
+    Route::get('/{any}', function () {
+        return view('app'); // Returns the main app view
+    })->where('any', '.*');
+    ```
+
+### API Endpoints
+
+1. **Authentication** (HTTPOnly Cookies via Sanctum):
+
+    - `POST /api/login`: Logs in a user and sets the session cookie.
+    - `POST /api/register`: Registers a new user.
+
+2. **Books**:
+
+    - `GET /api/books`: Retrieve a list of books.
+    - `POST /api/books`: Create a new book.
+    - `GET /api/books/{id}`: Get a specific book by ID.
+    - `PUT /api/books/{id}`: Update an existing book.
+    - `DELETE /api/books/{id}`: Delete a book.
+
+3. **Authors**:
+    - `GET /api/authors`: Retrieve a list of authors.
+    - `POST /api/authors`: Create a new author.
+    - `GET /api/authors/{id}`: Get a specific author by ID.
+    - `PUT /api/authors/{id}`: Update an existing author.
+    - `DELETE /api/authors/{id}`: Delete an author.
+
+### Frontend Pages
+
+1. **Home Page** (`/`):
+
+    - Displays a welcome message or dashboard.
+
+2. **Author List** (`/authors`):
+
+    - Shows a list of authors with options to edit or delete.
+
+3. **Book List** (`/books`):
+
+    - Displays a list of books with CRUD operations.
+
+4. **Create/Edit Author**:
+
+    - Forms for adding and updating authors.
+
+5. **Create/Edit Book**:
+    - Forms for adding and updating books.
+
+### Authentication
+
+-   HTTPOnly cookies are used for authentication, with Laravel Sanctum managing the session and API token authentication.
+-   Use the `Login`, `Register`, and `Dashboard` React components to handle user authentication and session management.
+
+### Search Functionality
+
+-   Integrated with Laravel Scout for searching books by title or author. The search index is handled by Algolia.
+
+### Folder Structure
+
+```
+authorly/
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/
+│   │   │   ├── Api/         // API controllers
+│   │   │   └── Web/         // Inertia/web controllers
+├── database/
+│   ├── migrations/          // Database migration files
+│   └── seeders/             // Database seeders
+├── resources/
+│   ├── js/
+│   │   ├── Pages/           // React components
+│   │   ├── Components/      // Shared components
+├── routes/
+│   ├── api.php              // API routes
+│   └── web.php              // Web routes (Inertia)
+```
+
+### Testing
+
+-   Unit tests for books and authors can be found in `tests/Feature/BookTest.php` and `tests/Feature/AuthorTest.php`.
+
+Run the tests using:
+
+```bash
+php artisan test
+```

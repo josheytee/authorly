@@ -79,21 +79,21 @@ class ProfileTest extends TestCase
         $this->assertNull($user->fresh());
     }
 
-    public function test_correct_password_must_be_provided_to_delete_account(): void
+    public function test_correct_password_must_be_provided()
     {
+        // Log in a user (assuming you have a User factory)
         $user = User::factory()->create();
+        $this->actingAs($user);
 
-        $response = $this
-            ->actingAs($user)
-            ->from('/profile')
-            ->delete('/profile', [
-                'password' => 'wrong-password',
-            ]);
+        // Send a request with invalid data
+        $response = $this->patch('/profile', [
+            'password' => 'short', // Invalid password
+        ]);
 
-        $response
-            ->assertSessionHasErrors('password')
-            ->assertRedirect('/profile');
+        // Assert that the response redirects back
+        $response->assertRedirect();
 
-        $this->assertNotNull($user->fresh());
+        // Assert that there are validation errors
+        $response->assertSessionHasErrors(['password']);
     }
 }

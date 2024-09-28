@@ -1,0 +1,16 @@
+{
+  "resources/js/Components/Auth/Login.jsx": [],
+  "resources/js/Components/Auth/Register.jsx": [],
+  "resources/js/Components/Book.jsx": [],
+  "resources/js/ErrorBoundary.jsx": [],
+  "resources/js/Pages/Authors/AuthorList.jsx": [],
+  "resources/js/Pages/Authors/CreateAuthor.jsx": [],
+  "resources/js/Pages/Authors/EditAuthor.jsx": [],
+  "resources/js/Pages/Books/BookList.jsx": [],
+  "resources/js/Pages/Books/CreateBook.jsx": [],
+  "resources/js/Pages/Books/EditBook.jsx": [],
+  "resources/js/Pages/Dashboard.jsx": [],
+  "resources/js/Pages/Home.jsx": [],
+  "resources/js/api/api.js": [],
+  "resources/js/app.jsx": []
+}

@@ -21,6 +21,7 @@ class Book extends Model
     {
         return [
             'title' => $this->title,
+            // 'author' => $this->author,
             'author_id' => $this->author_id, // Assuming author relationship
         ];
     }

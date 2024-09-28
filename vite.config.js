@@ -10,4 +10,7 @@ export default defineConfig({
         }),
         react(),
     ],
+    build: {
+        outDir: 'public/assets', // Ensure built assets are placed where Laravel can serve them
+      },
 });

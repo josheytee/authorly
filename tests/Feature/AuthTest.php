@@ -26,7 +26,7 @@ class AuthTest extends TestCase
         ]);
 
         $response->assertStatus(200)
-                 ->assertCookie('token'); // Check if the token cookie is set
+            ->assertCookie('token'); // Check if the token cookie is set
 
         // Optionally check if the cookie is HTTPOnly
         $this->assertTrue($response->headers->getCookies()[0]->isHttpOnly());
@@ -46,6 +46,6 @@ class AuthTest extends TestCase
         ]);
 
         $response->assertStatus(401)
-                 ->assertJson(['error' => 'Invalid credentials']);
+            ->assertJson(['error' => 'Invalid credentials']);
     }
 }

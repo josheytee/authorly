@@ -3,6 +3,9 @@
 namespace App\Repositories;
 
 use App\Models\Book;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class BookRepository
@@ -23,7 +26,8 @@ class BookRepository
             return $this->model->search($query)->get();
         } else {
             // Use query-based search
-            return $this->model->where('title', 'LIKE', "%{$query}%")
+
+            return $this->model->with('author')->where('title', 'LIKE', "%{$query}%")
                 ->orWhereHas('author', function ($q) use ($query) {
                     $q->where('name', 'LIKE', "%{$query}%");
                 })
@@ -36,9 +40,14 @@ class BookRepository
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function getAll()
+    public function getAll(): Collection
     {
         return $this->model->all();
+    }
+
+    public function paginate(int $perPage = 15): LengthAwarePaginator
+    {
+        return $this->model->paginate($perPage);
     }
 
     /**
@@ -90,5 +99,25 @@ class BookRepository
     {
         $book = $this->findById($id); // Find or throw exception if not found
         return $book->delete();
+    }
+    public function findByAuthor($authorId): Collection
+    {
+        return $this->model->where('author_id', $authorId)->get();
+    }
+
+    public function findRelated(Book $book, int $limit = 5): Collection
+    {
+        return $this->model->where('genre', $book->genre)
+            ->where('id', '!=', $book->id)
+            ->limit($limit)
+            ->get();
+    }
+
+    public function toggleAvailability($id): Model
+    {
+        $book = $this->findById($id);
+        $book->is_available = !$book->is_available;
+        $book->save();
+        return $book;
     }
 }
