@@ -1,31 +1,36 @@
 <?php
 
-use App\Http\Controllers\API\AuthorController;
-use App\Http\Controllers\API\BookController;
-use App\Http\Controllers\API\AuthController;
-use Illuminate\Support\Facades\Route;
-use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
-use App\Http\Controllers\API\UserController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\BookController;
+use App\Http\Controllers\Api\AuthorController;
 
-Route::middleware('guest')->post('/login', [AuthController::class, 'login'])->name('api.login');
-Route::middleware('guest')->post('/register', [AuthController::class, 'register']);
+/*
+|--------------------------------------------------------------------------
+| API Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register API routes for your application. These
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "api" middleware group. Make something great!
+|
+*/
 
+Route::get('/user', function (Request $request) {
+    return $request->user();
+})->middleware('auth:sanctum');
 
-// Route::middleware('auth:sanctum')->group(function () {
-//     Route::post('/books', [BookController::class, 'store']);       // Create a book
-//     Route::put('/books/{book}', [BookController::class, 'update']); // Update a book
-//     Route::delete('/books/{book}', [BookController::class, 'destroy']); // Delete a book
-// });
+Route::post('/register', [AuthController::class, 'createUser']);
+Route::post('/login', [AuthController::class, 'loginUser'])->name('login');
 
-
-Route::get('/user', [UserController::class, 'index']);
 Route::middleware('auth:sanctum')->group(function () {
-    // Route::prefix('v1')->group(function () {
+    // Protected routes that require authentication
+    Route::get('/user', [AuthController::class, 'user']);
+    Route::post('/logout', [AuthController::class, 'logout']);
 
     Route::get('/books/search', [BookController::class, 'search'])->name('books.search');
 
     Route::apiResource('books', BookController::class);
     Route::apiResource('authors', AuthorController::class);
-    // });
 });

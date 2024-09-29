@@ -2,9 +2,7 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
-use Laravel\Sanctum\Sanctum;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,11 +11,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // Custom Sanctum Token Retrieval from Cookie
-        Sanctum::getAccessTokenFromRequestUsing(function ($request) {
-            // Retrieve token from the HTTPOnly cookie named 'api_token'
-            return $request->cookie('api_token');
-        });
+        //
     }
 
     /**
@@ -25,6 +19,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Vite::prefetch(concurrency: 3);
+        //
     }
 }

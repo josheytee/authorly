@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\Api;
 
 use App\Services\BookService;
 use Illuminate\Http\Request;
@@ -25,16 +25,7 @@ class BookController extends Controller
         return response()->json($books);
     }
 
-    /**
-     * Display a listing of the books.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    // public function index()
-    // {
-    //     $books = $this->bookService->getAllBooks();
-    //     return response()->json($books);
-    // }
+
     public function index(Request $request)
     {
         $search = $request->query('search');

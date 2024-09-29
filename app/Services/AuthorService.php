@@ -45,9 +45,4 @@ class AuthorService
     {
         return $this->authorRepository->delete($id);
     }
-
-    public function getauthorsByAuthor($authorId): Collection
-    {
-        return $this->authorRepository->findByAuthor($authorId);
-    }
 }
