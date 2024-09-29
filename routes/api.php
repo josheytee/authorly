@@ -17,20 +17,29 @@ use App\Http\Controllers\Api\AuthorController;
 |
 */
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+// Public Routes
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
 
-Route::post('/register', [AuthController::class, 'createUser']);
-Route::post('/login', [AuthController::class, 'loginUser'])->name('login');
-
+// Protected Routes (require authentication)
 Route::middleware('auth:sanctum')->group(function () {
-    // Protected routes that require authentication
-    Route::get('/user', [AuthController::class, 'user']);
-    Route::post('/logout', [AuthController::class, 'logout']);
+
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+
+    // Author routes
+    Route::apiResource('authors', AuthorController::class);
 
     Route::get('/books/search', [BookController::class, 'search'])->name('books.search');
 
+    // Books by author routes
+    Route::get('/authors/{author_id}/books', [BookController::class, 'getBooksByAuthor']); // Get books by author
+    Route::post('/authors/{author_id}/books', [BookController::class, 'addBookToAuthor']); // Add a book for an author
+
+    // Book routes
     Route::apiResource('books', BookController::class);
-    Route::apiResource('authors', AuthorController::class);
+
+    // Logout
+    Route::post('/logout', [AuthController::class, 'logout']);
 });

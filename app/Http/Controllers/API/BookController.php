@@ -115,4 +115,29 @@ class BookController extends Controller
             return response()->json(['error' => 'Book not found'], 404);
         }
     }
+
+    // Get books by author ID
+    public function getBooksByAuthor($author_id)
+    {
+        $author = Author::findOrFail($author_id);
+        $books = $author->books; // Assuming a relationship exists between Author and Book models
+        return response()->json($books);
+    }
+
+    // Add a new book to a specific author
+    public function addBookToAuthor(Request $request, $author_id)
+    {
+        $author = Author::findOrFail($author_id);
+
+        $book = new Book;
+        $book->title = $request->title;
+        $book->description = $request->description;
+        $book->author_id = $author_id;  // Assign the author
+        $book->save();
+
+        return response()->json([
+            'message' => 'Book added to author successfully!',
+            'book' => $book
+        ]);
+    }
 }
